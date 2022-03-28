@@ -1,8 +1,16 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Navbar = () => {
+  let history = useHistory();
   let location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history.push("/login");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -23,20 +31,51 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/" ? "active fw-bold" : "" } `} aria-current="page" to="/" > Home </Link>
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/" ? "active fw-bold" : ""
+                } `}
+                aria-current="page"
+                to="/"
+              >
+                {" "}
+                Home{" "}
+              </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/about" ? "active fw-bold" : "" } `} to="/about"> About</Link>
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/about" ? "active fw-bold" : ""
+                } `}
+                to="/about"
+              >
+                {" "}
+                About
+              </Link>
             </li>
           </ul>
-          <div className="d-flex">
-            <Link to="/login" className="mx-1 btn btn-sm btn-outline-success">
-              Login
-            </Link>
-            <Link to="/signup" className="mx-1 btn btn-sm btn-outline-success">
-              Signup
-            </Link>
-          </div>
+          {!localStorage.getItem("token") ? (
+            <div className="d-flex">
+              <Link to="/login" className="mx-1 btn btn-sm btn-outline-success">
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="mx-1 btn btn-sm btn-outline-success"
+              >
+                Signup
+              </Link>
+            </div>
+          ) : (
+            <div className="d-flex">
+              <Link to=""
+                onClick={handleLogout}
+                className="mx-1 btn btn-sm btn-outline-success"
+              >
+                Logout
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>
